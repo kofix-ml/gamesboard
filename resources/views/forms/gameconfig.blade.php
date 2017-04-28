@@ -1,6 +1,6 @@
 <div class="form-group">
 	{!! Form::label('type_id', 'Game Type') !!}
-	{!! Form::select('type_id', $types, '1', array('class' => 'form-control')) !!}
+	{!! Form::select('type_id', \App\Type::pluck('label','id'), null, array('class' => 'form-control')) !!}
 </div>
 <div class="form-group">
 	{!! Form::label('title', 'Name') !!}
@@ -13,11 +13,11 @@
 </div>
 <div class="form-group">
 	{!! Form::label('total_player', 'Total Player') !!}
-	{!! Form::number('total_player', 0, array('class' => 'form-control', 'min' => '0')) !!}
+	{!! Form::number('total_player', null, array('class' => 'form-control', 'min' => '0')) !!}
 </div>
 <div class="form-group">
 	{!! Form::label('total_group', 'Total Group') !!}
-	{!! Form::number('total_group', 0, array('class' => 'form-control', 'min' => '0')) !!}
+	{!! Form::number('total_group', null, array('class' => 'form-control', 'min' => '0')) !!}
 </div>
 <div class="form-group">
     {!! Form::label('player_arrangement', 'Arrangement Type') !!}

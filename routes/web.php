@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
-Route::resource('game', 'GameController');
+Route::resource('game', 'GameController', ['only' => ['index', 'show', 'update', 'destroy', 'store']]);
 
 Route::resource('player', 'PlayerController');
 

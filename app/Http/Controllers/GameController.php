@@ -53,22 +53,13 @@ class GameController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $types = Type::all()->pluck('label','id');
-        return view('game.new',compact('types'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    *
+    *    Changes for Store
+    *    Description : Saving a game
+    *    Last edited by : Firdausneonexxa
+    *
+    */
+        
     public function store(Request $request)
     {
         $parameters = $request->all();
@@ -101,30 +92,32 @@ class GameController extends Controller
      */
     public function show(Game $game)
     {
-        //
+        $players = Player::all()->where('game_id', $game->id);
+        // dd($players);
+        return view('board.gamedashboard',compact('players'));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Game  $game
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Game $game)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Game  $game
-     * @return \Illuminate\Http\Response
-     */
+    *
+    *    Changes for Update
+    *    Description :     
+    *    Last edited by : Firdausneonexxa
+    *
+    */
+        
     public function update(Request $request, Game $game)
     {
-        //
+        $parameters = $request->all();
+
+        $game->type_id               = $parameters['type_id'];
+        $game->title                 = $parameters['title'];
+        $game->description           = $parameters['description'];
+        $game->total_player          = $parameters['total_player'];
+        $game->total_group           = $parameters['total_group'];
+        $game->player_arrangement    = $parameters['player_arrangement'];
+        $game->save();
+
+        return redirect()->route('game.index');
     }
 
     /**
@@ -135,6 +128,7 @@ class GameController extends Controller
      */
     public function destroy(Game $game)
     {
-        //
+        $game->delete();
+        return redirect()->route('game.index');
     }
 }

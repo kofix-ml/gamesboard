@@ -8,6 +8,8 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+require('vue-resource');
+Vue.config.debug = true;
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -18,5 +20,13 @@ window.Vue = require('vue');
 Vue.component('example', require('./components/Example.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    methods: {
+        say: function (message) {
+          alert(message)
+        }
+    },
+    data: {
+    	counter: 0
+    }
 });
