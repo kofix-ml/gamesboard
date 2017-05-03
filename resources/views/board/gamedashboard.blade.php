@@ -17,6 +17,17 @@
         <div class="container">
           <br>
           <div class="col-md-12">
+          {{-- jefrey way --}}
+            @foreach($players as $player)
+              <div class="row">
+                {{-- model marks --}}
+                
+                
+              </div>
+            @endforeach
+
+
+          {{-- vue way --}}
            {{--  @foreach($players as $player)
               <div class="row">
                 {{$player->name}}

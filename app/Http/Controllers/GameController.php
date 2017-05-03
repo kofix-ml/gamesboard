@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Game;
 use App\Player;
+use App\Marks;
 use App\Publish;
 use App\Type;
 use Illuminate\Http\Request;
@@ -39,11 +40,16 @@ class GameController extends Controller
             // if (count($result)) { }
 
         //check for empty collection
-        if($players->isEmpty())
-        {
-            $players = 0;
+        // dd($players);
+        
+        foreach ($games as $game) {
+            if(!$players->get($game->id))
+            {
+                $players->prepend(null, $game->id);
+            }
         }
-
+        
+        // dd($players);
         if($publishes->isEmpty())
         {
             $publishes = 0;
@@ -92,9 +98,9 @@ class GameController extends Controller
      */
     public function show(Game $game)
     {
-        $players = Player::all()->where('game_id', $game->id);
+        $marks      = Mark::all()->where('game_id', $game->id);
         // dd($players);
-        return view('board.gamedashboard',compact('players'));
+        return view('board.gamedashboard',compact('marks'));
     }
 
     /**

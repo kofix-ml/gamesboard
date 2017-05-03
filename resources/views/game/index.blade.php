@@ -29,7 +29,12 @@
                         <p>Game type : {{$game->type->label}}</p>
                         {!! Form::model($publishes[$game->id][0], ['route' => ['publish.update', $publishes[$game->id][0]['id']], 'method' => 'PUT', 'id' => 'publishstatusform_'.$game->id]) !!}
                         <p>Status : 
+                            @if (count($players[$game->id]) != $game->total_player) 
+                            <i style="color: red">please add all your players before getting it online</i>
+                            {!! Form::select('status', ['0' => 'Offline', '1' => 'Online'], $publishes[$game->id][0]['status'], array('class' => 'form-control', 'id' => 'publish_status_'.$game->id, 'readonly' => true, 'disabled' => true)) !!}
+                            @else
                             {!! Form::select('status', ['0' => 'Offline', '1' => 'Online'], $publishes[$game->id][0]['status'], array('class' => 'form-control', 'id' => 'publish_status_'.$game->id)) !!}
+                            @endif
                         </p>
                         {!! Form::close() !!}
                         <p>Publish at : </p><input class="form-control" type="text" placeholder="URL Link.." readonly>
@@ -41,7 +46,7 @@
                             </button>
                         </div>
                         <div class="col-md-12 col-xs-6" style="padding: 0px 0px 10px 0px">
-                            <button class="btn btn-primary col-md-12 col-xs-10 col-xs-offset-1" type="button" data-toggle="modal" data-target="#setting_player" @if($publishes[$game->id][0]['status'])disabled="true"@endif>
+                            <button class="btn btn-primary col-md-12 col-xs-10 col-xs-offset-1" type="button" data-toggle="modal" data-target="@if(!count($players[$game->id])) #players_error @else #setting_player_{{$game->id}} @endif" @if($publishes[$game->id][0]['status'])disabled="true"@endif>
                                 Players Setting <i class="fa fa-users" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -80,13 +85,17 @@
 
 {{-- include game player modal add --}}
 @foreach($games as $game)
-@include('game.add_player_modal',['game'=>$game,'total_player'=>$game->total_player,'current_player'=>count($players[$game->id])])
-@include('game.setting_player_modal',['game'=>$game,'total_player'=>$game->total_player,'current_player'=>count($players[$game->id]),'players'=>$players[$game->id]])
-@include('game.edit',['game'=>$game,'current_player'=>count($players[$game->id]),'players'=>$players[$game->id]])
-@include('game.delete',['game'=>$game,'current_player'=>count($players[$game->id]),'players'=>$players[$game->id]])
+    @include('game.add_player_modal',['game'=>$game,'total_player'=>$game->total_player,'current_player'=>count($players[$game->id])])
+    @if(count($players[$game->id]))
+        @include('game.setting_player_modal',['game'=>$game,'total_player'=>$game->total_player,'current_player'=>count($players[$game->id]),'players'=>$players[$game->id]])
+    @endif
+    @include('game.edit',['game'=>$game,'current_player'=>count($players[$game->id]),'players'=>$players[$game->id]])
+    @include('game.delete',['game'=>$game,'current_player'=>count($players[$game->id]),'players'=>$players[$game->id]])
 @endforeach
+
 {{-- include public modal --}}
 @include('features_not_ready_modal')
+@include('no_players_modal')
 
 
 <script type="text/javascript">
@@ -106,6 +115,12 @@
     });
     @endforeach
 
+// open modal on redirect
+    @if(!empty(Session::get('player_setting_saved')))
+    $(function() {
+        $('#setting_player_'+{{Session::get('player_setting_saved')}}).modal('show');
+    });
+    @endif
 
 
     function gameindex(actiontype) {

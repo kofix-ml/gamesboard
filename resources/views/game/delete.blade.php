@@ -8,7 +8,7 @@
       	</div>
   		<div class="modal-body">
   		  	{!! Form::model($game, ['route' => ['game.destroy', $game->id], 'files' => true, 'method' => 'DELETE', 'id' => 'deletethisgame_'.$game->id]) !!}
-  		  	   <p>Are you sure you want to delete this game?</p>
+  		  	   <p>Are you sure you want to delete this game? Deleting this game will also delete all of its player.</p>
   		  	{!! Form::close() !!}
   		</div>
       <div class="modal-footer">

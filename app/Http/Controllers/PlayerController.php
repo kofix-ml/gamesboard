@@ -29,5 +29,34 @@ class PlayerController extends Controller
 
         return redirect()->route('game.index');
     }
+
+    /**
+    *
+    *	Changes for update
+    *	Description :     
+    *	Last edited by : Firdausneonexxa
+    *
+    */
+    	
+    public function update(Request $request, Player $player)
+    {
+        $parameters = $request->all();
+        $player->name                  = $parameters['name'];
+        $player->save();
+
+        return back()->with('player_setting_saved', $player->game_id);
+    }
+    	
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Game  $game
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Player $player)
+    {
+        $player->delete();
+        return back()->with('player_setting_saved', $player->game_id);
+    }
     
 }

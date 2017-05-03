@@ -8,19 +8,19 @@
       </div>
       <div class="modal-body">
         @foreach($players as $player)
-          {!! Form::model($player, ['route' => ['player.update', $player->id], 'files' => true, 'id' => 'playersetting', 'class' => 'form-inline']) !!}
+          {!! Form::model($player, ['route' => ['player.update', $player->id], 'files' => true, 'id' => 'playersetting', 'class' => 'form-inline', 'method' => 'PUT']) !!}
               <div class="form-group">
                   {!! Form::label('name', 'Name') !!}
                   {!! Form::text('name', null, array('class' => 'form-control')) !!}
               </div>
               <button type="submit" class="btn btn-default">Save</button>
               {!! Form::hidden('game_id', $game->id, array('class' => 'form-control')) !!}
-          {!! Form::close() !!}
+          {!! Form::close() !!} 
         @endforeach
       </div>
       <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary saveplayersetting">Add</button>
+          <button type="button" class="btn btn-primary saveplayersetting">Save</button>
       </div>
     </div>
   </div>
