@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Game;
+use App\GameAgent;
+use App\GameRoute;
 use App\Player;
 use App\Marks;
 use App\Publish;
@@ -98,9 +100,11 @@ class GameController extends Controller
      */
     public function show(Game $game)
     {
-        $marks      = Mark::all()->where('game_id', $game->id);
-        // dd($players);
-        return view('board.gamedashboard',compact('marks'));
+        $marks      = Marks::all()->where('game_id', $game->id);
+        $gameagents = GameAgent::all()->where('game_id', $game->id);
+        $gameroute  = GameRoute::get()->where('game_id', $game->id);
+        
+        return view('board.gamedashboard',compact('marks','gameagents','gameroute'));
     }
 
     /**

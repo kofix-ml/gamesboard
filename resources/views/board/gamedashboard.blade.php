@@ -16,13 +16,21 @@
     <div role="tabpanel" class="tab-pane active" id="playercontrol">
         <div class="container">
           <br>
-          <div class="col-md-12">
+          <div class="col-md-6 col-md-offset-3">
           {{-- jefrey way --}}
-            @foreach($players as $player)
+            @foreach($marks as $mark)
               <div class="row">
-                {{-- model marks --}}
-                
-                
+                {!! Form::model($mark, ['route' => ['mark.update', $mark->id], 'method' => 'PUT', 'id' => 'updateplayermark_'.$mark->player->id]) !!}
+                <div class="form-inline">
+                  <div class="form-group">
+                    {!! Form::text('name', $mark->player->name, array('class' => 'form-control', 'disabled' => true)) !!}
+                  </div>
+                  <div class="form-group">
+                    {!! Form::number('value', $mark->value, array('class' => 'form-control')) !!}
+                  </div>
+                  <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+                {!! Form::close() !!}
               </div>
             @endforeach
 
@@ -40,8 +48,73 @@
         </div>
         
     </div>
-    <div role="tabpanel" class="tab-pane" id="gameagent">agent list, role, remove</div>
-    <div role="tabpanel" class="tab-pane" id="gamecontrol">board freeze, game start</div>
+    <div role="tabpanel" class="tab-pane" id="gameagent">
+      <div class="container">
+        <br>
+        <br>
+        <div class="row">
+          <button class="btn btn-success" type="button" data-toggle="modal" data-target="#add_game_agent">Add Agent <i class="fa fa-users" aria-hidden="true"></i></button> 
+        </div>
+        @foreach($gameagents as $gameagent)
+          <div class="row">
+            {!! Form::model($gameagent, ['route' => ['gameagent.update', $gameagent->id], 'method' => 'PUT', 'id' => 'updategameagent_'.$gameagent->user->id]) !!}
+                <div class="form-inline">
+                  <div class="form-group">
+                    {!! Form::text('name', $gameagent->user->name, array('class' => 'form-control', 'disabled' => true)) !!}
+                  </div>
+                  <div class="form-group">
+                    {!! Form::select('role_id', \App\Role::pluck('label','id'), null, array('class' => 'form-control')) !!}
+                  </div>
+                  <button type="submit" class="btn btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                </div>
+            {!! Form::close() !!}
+          </div>
+        @endforeach
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="gamecontrol">
+      <div class="container">
+        <br>
+        <br>
+        <div class="row">
+          <button class="btn btn-warning" type="button" data-toggle="modal" data-target="#generate_key">Generate Key <i class="fa fa-key" aria-hidden="true"></i></button> 
+        </div>
+        <br>
+        <div class="row">
+          {{-- check if exist --}}
+          @if($gameroute->count() > 0) 
+            <div class="form-inline">
+              <div class="form-group">
+                {!! Form::text('key', $gameroute->key, array('class' => 'form-control', 'disabled' => true)) !!}
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-default"><i class="fa fa-clone" aria-hidden="true"></i></button>
+              </div>
+            </div>
+          @else
+            <div class="form-inline">
+              <div class="form-group">
+                {!! Form::text('key', 'No key generated yet', array('class' => 'form-control', 'disabled' => true)) !!}
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-default"><i class="fa fa-clone" aria-hidden="true"></i></button>
+              </div>
+            </div>
+          @endif
+        </div>
+        <br>
+        <br>
+        <div class="row">
+          <h3>Game Control</h3>
+          <div class="form-inline">
+            <button type="submit" class="btn btn-default"><i class="fa fa-play" aria-hidden="true"></i></button>
+            <button type="submit" class="btn btn-default"><i class="fa fa-pause" aria-hidden="true"></i></button>
+            <button type="submit" class="btn btn-default"><i class="fa fa-stop" aria-hidden="true"></i></button>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
 
 </div>
