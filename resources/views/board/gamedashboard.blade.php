@@ -77,15 +77,27 @@
         <br>
         <br>
         <div class="row">
-          <button class="btn btn-warning" type="button" data-toggle="modal" data-target="#generate_key">Generate Key <i class="fa fa-key" aria-hidden="true"></i></button> 
+          @if($gameroute->count() > 0) 
+          {!! Form::model($gameroute[0], ['route' => ['gameroute.update', $gameroute[0]->id], 'files' => true, 'method' => 'PUT']) !!}
+          <button class="btn btn-warning" type="submit">Re-Generate Key <i class="fa fa-key" aria-hidden="true"></i></button>
+          {!! Form::hidden('game_id', $game->id, array('class' => 'form-control')) !!} 
+          {!! Form::close() !!}
+          @else
+          {!! Form::open(['route' => 'gameroute.store', 'files' => true]) !!}
+          <button class="btn btn-warning" type="submit">Generate Key <i class="fa fa-key" aria-hidden="true"></i></button>
+          {!! Form::hidden('game_id', $game->id, array('class' => 'form-control')) !!} 
+          {!! Form::close() !!}
+          @endif
         </div>
         <br>
         <div class="row">
+          
           {{-- check if exist --}}
           @if($gameroute->count() > 0) 
+            
             <div class="form-inline">
               <div class="form-group">
-                {!! Form::text('key', $gameroute->key, array('class' => 'form-control', 'disabled' => true)) !!}
+                {!! Form::text('key', $gameroute[0]->key, array('class' => 'form-control', 'disabled' => true)) !!}
               </div>
               <div class="form-group">
                 <button type="submit" class="btn btn-default"><i class="fa fa-clone" aria-hidden="true"></i></button>
@@ -101,6 +113,7 @@
               </div>
             </div>
           @endif
+
         </div>
         <br>
         <br>

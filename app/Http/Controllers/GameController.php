@@ -102,9 +102,10 @@ class GameController extends Controller
     {
         $marks      = Marks::all()->where('game_id', $game->id);
         $gameagents = GameAgent::all()->where('game_id', $game->id);
-        $gameroute  = GameRoute::get()->where('game_id', $game->id);
+        $gameroute  = GameRoute::where('game_id', $game->id)->orderBy('id', 'desc')->get();
         
-        return view('board.gamedashboard',compact('marks','gameagents','gameroute'));
+
+        return view('board.gamedashboard',compact('marks','gameagents','gameroute','game'));
     }
 
     /**
